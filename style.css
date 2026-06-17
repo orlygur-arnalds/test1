@@ -1,11 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
+  --page: #e9e7e2;
   --bg: #fbfaf8;
   --text: #1a1a1a;
   --text-muted: #6b6b68;
   --accent: #b5481f;
-  --line: #e3e0da;
+  --line: rgba(26, 26, 26, 0.22);
 }
 
 * { box-sizing: border-box; }
@@ -14,13 +15,14 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--page);
   color: var(--text);
-  font-family: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 16px;
-  line-height: 1.65;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.92rem;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   padding: 2.5rem 1.5rem;
+  counter-reset: block;
 }
 
 a {
@@ -38,7 +40,7 @@ a:hover {
 }
 
 .wrap {
-  max-width: 680px;
+  max-width: 760px;
   margin: 0 auto;
 }
 
@@ -56,16 +58,19 @@ a:hover {
 
 .top__name {
   margin: 0;
+  font-family: 'Archivo', sans-serif;
   font-weight: 800;
-  font-size: clamp(2rem, 5.5vw, 2.9rem);
-  line-height: 1.05;
+  font-size: clamp(2.2rem, 7vw, 3.6rem);
+  line-height: 0.95;
   letter-spacing: -0.02em;
+  text-transform: uppercase;
 }
 
 .top__roles {
-  margin: 0.6rem 0 0;
-  font-size: 0.95rem;
-  letter-spacing: 0.01em;
+  margin: 0.7rem 0 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .top__roles, .top__location {
@@ -74,7 +79,9 @@ a:hover {
 
 .top__location {
   margin: 0.2rem 0 0;
-  font-size: 0.88rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .photo {
@@ -101,43 +108,60 @@ a:hover {
 
 nav.jump {
   grid-column: 1 / -1;
-  margin: 1.8rem 0 0;
+  margin: 2rem 0 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem 1.3rem;
-  padding-top: 1.4rem;
-  border-top: 1px solid var(--line);
+  border: 1px solid var(--line);
+  background: var(--bg);
 }
 
 nav.jump a {
+  flex: 1 1 auto;
+  text-align: center;
   text-decoration: none;
-  font-size: 0.82rem;
-  letter-spacing: 0.03em;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-muted);
+  padding: 0.85rem 0.6rem;
+  border-right: 1px solid var(--line);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+nav.jump a:last-child {
+  border-right: none;
 }
 
 nav.jump a:hover {
-  color: var(--accent);
+  color: var(--bg);
+  background: var(--text);
 }
 
 section {
-  margin: 3.2rem 0;
-  padding-top: 1.8rem;
-  border-top: 1px solid var(--line);
+  margin: 0;
+  margin-top: -1px;
+  padding: 1.8rem 1.8rem 2.1rem;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  position: relative;
 }
 
-section:first-of-type {
-  border-top: none;
-  padding-top: 0;
+section::before {
+  counter-increment: block;
+  content: "0" counter(block);
+  display: block;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
 }
 
 h2 {
   margin: 0 0 1.4rem;
-  font-weight: 800;
-  font-size: 0.95rem;
+  font-weight: 700;
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--accent);
 }
 
@@ -150,9 +174,11 @@ p { margin: 0 0 0.95rem; }
 .entry:last-child { margin-bottom: 0; }
 
 .entry h3 {
-  margin: 0 0 0.25rem;
-  font-size: 1rem;
-  font-weight: 600;
+  margin: 0 0 0.3rem;
+  font-family: 'Archivo', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
 .entry .meta {
@@ -191,11 +217,11 @@ p { margin: 0 0 0.95rem; }
 
 .group h3 {
   margin: 0 0 0.5rem;
-  font-size: 0.92rem;
-  font-weight: 600;
+  font-family: 'Archivo', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
+  letter-spacing: 0.02em;
 }
 
 .year {
@@ -204,11 +230,11 @@ p { margin: 0 0 0.95rem; }
 }
 
 footer {
-  margin: 4rem 0 1rem;
-  font-size: 0.8rem;
+  margin: 3rem 0 1rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
   text-align: center;
-  padding-top: 1.8rem;
+  padding-top: 1.6rem;
   border-top: 1px solid var(--line);
 }
 
