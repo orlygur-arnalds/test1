@@ -1,8 +1,9 @@
 :root {
+  --bg: #b9b65f;
   --text: #111;
-  --text-muted: #666;
-  --accent: #b5481f;
-  --line: #ddd;
+  --text-muted: #3f3f2d;
+  --accent: #2f5d34;
+  --line: #a8a552;
 }
 
 * { box-sizing: border-box; }
@@ -11,7 +12,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: #fff;
+  background: var(--bg);
   color: var(--text);
   font-family: ui-monospace, Menlo, Consolas, "Courier New", monospace;
   font-size: 15px;
