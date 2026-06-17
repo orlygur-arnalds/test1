@@ -20,12 +20,12 @@ body {
 }
 
 a {
-  color: var(--accent);
+  color: var(--text);
   text-decoration: underline;
 }
 
 a:hover {
-  color: var(--text);
+  color: var(--accent);
 }
 
 .wrap {
@@ -46,7 +46,14 @@ a:hover {
 .hero__text .name {
   font-size: 1rem;
   font-weight: normal;
-  margin-bottom: 2rem;
+  margin-bottom: 0.4rem;
+}
+
+.hero__subtitle {
+  margin: 0 0 2rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
 }
 
 .hero__photo {
