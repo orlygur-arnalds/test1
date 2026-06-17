@@ -63,6 +63,18 @@ nav.links a:hover {
   text-decoration: underline;
 }
 
+nav.back {
+  margin-bottom: 1.5rem;
+}
+
+nav.back a {
+  text-decoration: none;
+}
+
+nav.back a:hover {
+  text-decoration: underline;
+}
+
 .photo {
   display: block;
   width: 160px;
