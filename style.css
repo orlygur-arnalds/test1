@@ -46,14 +46,7 @@ a:hover {
 .hero__text .name {
   font-size: 1rem;
   font-weight: normal;
-  margin-bottom: 0.4rem;
-}
-
-.hero__subtitle {
-  margin: 0 0 2rem;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  letter-spacing: 0.03em;
+  margin-bottom: 2rem;
 }
 
 .hero__photo {
