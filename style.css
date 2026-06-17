@@ -38,18 +38,27 @@ a:hover {
   align-items: center;
   justify-content: space-between;
   gap: 3rem;
-  min-height: 70vh;
+  min-height: 92vh;
   padding: 3rem 6vw;
 }
 
 .hero__text .name {
-  font-size: 1.2rem;
+  font-size: 1rem;
+  font-weight: normal;
+  margin-bottom: 2rem;
 }
 
 .hero__photo {
   display: block;
-  width: min(40vw, 420px);
+  width: min(36vw, 420px);
   max-width: 100%;
+}
+
+.home__footer {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 0 0 2rem;
+  font-size: 0.85rem;
 }
 
 @media (max-width: 700px) {
