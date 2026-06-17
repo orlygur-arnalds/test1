@@ -54,13 +54,6 @@ a:hover {
   max-width: 100%;
 }
 
-.home__footer {
-  text-align: center;
-  color: var(--text-muted);
-  padding: 0 0 2rem;
-  font-size: 0.85rem;
-}
-
 @media (max-width: 700px) {
   .hero {
     flex-direction: column-reverse;
