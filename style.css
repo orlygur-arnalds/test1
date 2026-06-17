@@ -122,22 +122,6 @@ h2 {
 
 p { margin: 0 0 0.9rem; }
 
-.bio-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.2rem 2rem;
-}
-
-@media (min-width: 600px) {
-  .bio-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .bio-grid p {
-    margin: 0;
-  }
-}
-
 .entry {
   margin-bottom: 1.4rem;
 }
