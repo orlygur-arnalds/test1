@@ -16,7 +16,6 @@ body {
   font-family: ui-monospace, Menlo, Consolas, "Courier New", monospace;
   font-size: 15px;
   line-height: 1.6;
-  padding: 3rem 1.5rem;
 }
 
 a {
@@ -31,6 +30,39 @@ a:hover {
 .wrap {
   max-width: 680px;
   margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  min-height: 70vh;
+  padding: 3rem 6vw;
+}
+
+.hero__text .name {
+  font-size: 1.2rem;
+}
+
+.hero__photo {
+  display: block;
+  width: min(40vw, 420px);
+  max-width: 100%;
+}
+
+@media (max-width: 700px) {
+  .hero {
+    flex-direction: column-reverse;
+    min-height: 0;
+    padding: 2.5rem 1.5rem;
+    gap: 2rem;
+  }
+
+  .hero__photo {
+    width: 60vw;
+  }
 }
 
 header {
@@ -74,23 +106,6 @@ nav.back a {
 
 nav.back a:hover {
   text-decoration: underline;
-}
-
-.photo {
-  margin: 0 0 1.5rem;
-}
-
-.photo img {
-  display: block;
-  width: 100%;
-  max-width: 320px;
-  border-radius: 4px;
-}
-
-.photo figcaption {
-  margin-top: 0.4rem;
-  font-size: 0.8rem;
-  color: var(--text-muted);
 }
 
 section {
