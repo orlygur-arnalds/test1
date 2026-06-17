@@ -37,9 +37,9 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 3rem;
+  gap: 1.5rem;
   min-height: 92vh;
-  padding: 3rem 6vw;
+  padding: 6rem 6vw 2rem;
 }
 
 .hero__text .name {
@@ -121,6 +121,22 @@ h2 {
 }
 
 p { margin: 0 0 0.9rem; }
+
+.bio-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem 2rem;
+}
+
+@media (min-width: 600px) {
+  .bio-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bio-grid p {
+    margin: 0;
+  }
+}
 
 .entry {
   margin-bottom: 1.4rem;
