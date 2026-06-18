@@ -1,8 +1,10 @@
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const CELL = 5;
-  const STEP_MS = 60;
+  const INK = '47, 93, 52';
+  const NODE_COUNT = 22;
+  const LINK_DIST = 220;
+  const GLYPH_INTERVAL = [4000, 9000];
 
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
@@ -17,55 +19,132 @@
   document.body.appendChild(canvas);
 
   const ctx = canvas.getContext('2d');
-  let cols, rows, row, y;
-
-  function seedRow() {
-    row = new Array(cols).fill(false);
-    row[Math.floor(cols / 2)] = true;
-  }
 
   function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    cols = Math.ceil(canvas.width / CELL);
-    rows = Math.ceil(canvas.height / CELL);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    seedRow();
-    y = 0;
   }
   resize();
   window.addEventListener('resize', resize);
 
-  function nextRow(r) {
-    const next = new Array(cols).fill(false);
-    for (let i = 0; i < cols; i++) {
-      const left = r[i - 1] || false;
-      const center = r[i];
-      const right = r[i + 1] || false;
-      next[i] = left !== (center || right);
-    }
-    return next;
+  function rand(min, max) {
+    return min + Math.random() * (max - min);
   }
 
-  function drawRow() {
-    ctx.fillStyle = 'rgba(47, 93, 52, 0.6)';
-    for (let i = 0; i < cols; i++) {
-      if (row[i]) ctx.fillRect(i * CELL, y, CELL - 1, CELL - 1);
-    }
+  function spawnNode() {
+    return {
+      x: rand(0, canvas.width),
+      y: rand(0, canvas.height),
+      vx: rand(-0.08, 0.08),
+      vy: rand(-0.08, 0.08),
+      bit: Math.random() < 0.5,
+      flipAt: performance.now() + rand(3000, 12000),
+      life: rand(8000, 20000),
+      born: performance.now(),
+    };
+  }
+
+  let nodes = new Array(NODE_COUNT).fill(null).map(spawnNode);
+
+  // a hexagram: six stacked lines, each either solid (yang) or broken (yin)
+  function spawnGlyph() {
+    return {
+      x: rand(canvas.width * 0.1, canvas.width * 0.9),
+      y: rand(canvas.height * 0.1, canvas.height * 0.9),
+      lines: new Array(6).fill(null).map(() => Math.random() < 0.5),
+      born: performance.now(),
+      life: rand(2500, 5000),
+      w: rand(34, 54),
+    };
+  }
+
+  let glyphs = [];
+  let nextGlyphAt = performance.now() + rand(GLYPH_INTERVAL[0], GLYPH_INTERVAL[1]);
+
+  function drawGlyph(g, now) {
+    const age = now - g.born;
+    const t = age / g.life;
+    if (t >= 1) return false;
+    const fade = t < 0.2 ? t / 0.2 : t > 0.8 ? (1 - t) / 0.2 : 1;
+    const gap = g.w * 0.18;
+    const lineH = 6;
+    const totalH = g.lines.length * (lineH + 4);
+    ctx.strokeStyle = `rgba(${INK}, ${0.5 * fade})`;
+    ctx.lineWidth = 1.2;
+    g.lines.forEach((solid, i) => {
+      const ly = g.y - totalH / 2 + i * (lineH + 4);
+      ctx.beginPath();
+      if (solid) {
+        ctx.moveTo(g.x - g.w / 2, ly);
+        ctx.lineTo(g.x + g.w / 2, ly);
+      } else {
+        ctx.moveTo(g.x - g.w / 2, ly);
+        ctx.lineTo(g.x - gap / 2, ly);
+        ctx.moveTo(g.x + gap / 2, ly);
+        ctx.lineTo(g.x + g.w / 2, ly);
+      }
+      ctx.stroke();
+    });
+    return true;
   }
 
   function tick() {
-    drawRow();
-    y += CELL;
-    if (y > canvas.height) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      seedRow();
-      y = 0;
-    } else {
-      row = nextRow(row);
+    const now = performance.now();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    nodes.forEach((n) => {
+      n.x += n.vx;
+      n.y += n.vy;
+      if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+      if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+      if (now > n.flipAt) {
+        n.bit = !n.bit;
+        n.flipAt = now + rand(3000, 12000);
+      }
+    });
+
+    nodes = nodes.map((n) => (now - n.born > n.life ? spawnNode() : n));
+
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < LINK_DIST) {
+          const alpha = (1 - dist / LINK_DIST) * 0.35;
+          ctx.strokeStyle = `rgba(${INK}, ${alpha})`;
+          ctx.lineWidth = 0.6;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
     }
-    setTimeout(tick, STEP_MS);
+
+    nodes.forEach((n) => {
+      ctx.fillStyle = `rgba(${INK}, 0.6)`;
+      if (n.bit) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.strokeStyle = `rgba(${INK}, 0.6)`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 2.2, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    });
+
+    glyphs = glyphs.filter((g) => drawGlyph(g, now));
+    if (now > nextGlyphAt) {
+      glyphs.push(spawnGlyph());
+      nextGlyphAt = now + rand(GLYPH_INTERVAL[0], GLYPH_INTERVAL[1]);
+    }
+
+    requestAnimationFrame(tick);
   }
 
-  tick();
+  requestAnimationFrame(tick);
 })();
