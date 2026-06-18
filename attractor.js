@@ -4,7 +4,6 @@
   const INK = '47, 93, 52';
   const NODE_COUNT = 22;
   const LINK_DIST = 220;
-  const GLYPH_INTERVAL = [4000, 9000];
 
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
@@ -45,48 +44,6 @@
   }
 
   let nodes = new Array(NODE_COUNT).fill(null).map(spawnNode);
-
-  // a hexagram: six stacked lines, each either solid (yang) or broken (yin)
-  function spawnGlyph() {
-    return {
-      x: rand(canvas.width * 0.1, canvas.width * 0.9),
-      y: rand(canvas.height * 0.1, canvas.height * 0.9),
-      lines: new Array(6).fill(null).map(() => Math.random() < 0.5),
-      born: performance.now(),
-      life: rand(2500, 5000),
-      w: rand(34, 54),
-    };
-  }
-
-  let glyphs = [];
-  let nextGlyphAt = performance.now() + rand(GLYPH_INTERVAL[0], GLYPH_INTERVAL[1]);
-
-  function drawGlyph(g, now) {
-    const age = now - g.born;
-    const t = age / g.life;
-    if (t >= 1) return false;
-    const fade = t < 0.2 ? t / 0.2 : t > 0.8 ? (1 - t) / 0.2 : 1;
-    const gap = g.w * 0.18;
-    const lineH = 6;
-    const totalH = g.lines.length * (lineH + 4);
-    ctx.strokeStyle = `rgba(${INK}, ${0.5 * fade})`;
-    ctx.lineWidth = 1.2;
-    g.lines.forEach((solid, i) => {
-      const ly = g.y - totalH / 2 + i * (lineH + 4);
-      ctx.beginPath();
-      if (solid) {
-        ctx.moveTo(g.x - g.w / 2, ly);
-        ctx.lineTo(g.x + g.w / 2, ly);
-      } else {
-        ctx.moveTo(g.x - g.w / 2, ly);
-        ctx.lineTo(g.x - gap / 2, ly);
-        ctx.moveTo(g.x + gap / 2, ly);
-        ctx.lineTo(g.x + g.w / 2, ly);
-      }
-      ctx.stroke();
-    });
-    return true;
-  }
 
   function tick() {
     const now = performance.now();
@@ -136,12 +93,6 @@
         ctx.stroke();
       }
     });
-
-    glyphs = glyphs.filter((g) => drawGlyph(g, now));
-    if (now > nextGlyphAt) {
-      glyphs.push(spawnGlyph());
-      nextGlyphAt = now + rand(GLYPH_INTERVAL[0], GLYPH_INTERVAL[1]);
-    }
 
     requestAnimationFrame(tick);
   }
