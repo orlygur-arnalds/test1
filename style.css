@@ -186,17 +186,6 @@ details summary {
   color: var(--accent);
 }
 
-.badge {
-  display: inline-block;
-  margin-left: 0.5rem;
-  padding: 0.05rem 0.4rem;
-  font-size: 0.7rem;
-  color: var(--bg);
-  background: var(--accent);
-  border-radius: 3px;
-  vertical-align: middle;
-}
-
 @media print {
   body {
     background: #fff;
@@ -205,8 +194,7 @@ details summary {
   }
 
   nav.back,
-  nav.links,
-  .badge {
+  nav.links {
     display: none;
   }
 
