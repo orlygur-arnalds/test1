@@ -55,7 +55,12 @@
   ];
 
   const attractor = attractors[Math.floor(Math.random() * attractors.length)];
-  let [x, y, z] = attractor.state();
+
+  const PARTICLE_COUNT = 60;
+  const particles = Array.from({ length: PARTICLE_COUNT }, () => {
+    const [x, y, z] = attractor.state();
+    return { x, y, z, lastX: undefined, lastY: undefined };
+  });
 
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
@@ -80,39 +85,35 @@
   resize();
   window.addEventListener('resize', resize);
 
-  function step() {
-    const [dx, dy, dz] = attractor.step(x, y, z);
-    x += dx * attractor.dt;
-    y += dy * attractor.dt;
-    z += dz * attractor.dt;
+  function step(p) {
+    const [dx, dy, dz] = attractor.step(p.x, p.y, p.z);
+    p.x += dx * attractor.dt;
+    p.y += dy * attractor.dt;
+    p.z += dz * attractor.dt;
   }
 
-  function project() {
-    const [px, py] = attractor.project(x, y, z);
+  function project(p) {
+    const [px, py] = attractor.project(p.x, p.y, p.z);
     return [canvas.width / 2 + px * scale, canvas.height / 2 - py * scale];
   }
 
-  let lastX, lastY;
-
   function frame() {
     ctx.globalCompositeOperation = 'destination-out';
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.012)';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.02)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.globalCompositeOperation = 'source-over';
 
-    for (let i = 0; i < 4; i++) {
-      step();
-      const [nx, ny] = project();
-      if (lastX !== undefined) {
-        ctx.strokeStyle = 'rgba(47, 93, 52, 0.55)';
-        ctx.lineWidth = 0.7;
-        ctx.beginPath();
-        ctx.moveTo(lastX, lastY);
-        ctx.lineTo(nx, ny);
-        ctx.stroke();
-      }
-      lastX = nx;
-      lastY = ny;
+    for (const p of particles) {
+      step(p);
+      const [nx, ny] = project(p);
+
+      ctx.fillStyle = 'rgba(47, 93, 52, 0.7)';
+      ctx.beginPath();
+      ctx.arc(nx, ny, 1.1, 0, Math.PI * 2);
+      ctx.fill();
+
+      p.lastX = nx;
+      p.lastY = ny;
     }
 
     requestAnimationFrame(frame);
