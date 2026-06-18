@@ -161,16 +161,12 @@ nav.links {
 nav.links a,
 nav.back a {
   text-decoration: none;
-  background-image: linear-gradient(var(--accent), var(--accent));
-  background-position: 0 1.2em;
-  background-repeat: no-repeat;
-  background-size: 0% 1px;
-  transition: color 0.15s ease, background-size 0.2s ease;
+  transition: color 0.15s ease;
 }
 
 nav.links a:hover,
 nav.back a:hover {
-  background-size: 100% 1px;
+  text-decoration: underline;
 }
 
 nav.back {
@@ -247,16 +243,6 @@ p { margin: 0 0 0.9rem; }
 details summary {
   cursor: pointer;
   color: var(--accent);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1c2117;
-    --text: #e8e6d8;
-    --text-muted: #a9a98a;
-    --accent: #7fbf8a;
-    --line: #3a4630;
-  }
 }
 
 @media print {
