@@ -8,7 +8,56 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  view-transition-name: none;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body {
+  animation: fade-up 0.4s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--accent);
+  color: var(--bg);
+  padding: 0.4rem 0.8rem;
+  z-index: 10;
+}
+
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}
 
 body {
   margin: 0;
@@ -69,6 +118,8 @@ nav.back a:focus-visible {
   display: block;
   width: min(36vw, 420px);
   max-width: 100%;
+  border: 1px solid var(--line);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.12);
 }
 
 @media (max-width: 700px) {
@@ -107,29 +158,41 @@ nav.links {
   margin-bottom: 1.5rem;
 }
 
-nav.links a {
+nav.links a,
+nav.back a {
   text-decoration: none;
-  transition: color 0.15s ease;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-position: 0 1.2em;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: color 0.15s ease, background-size 0.2s ease;
 }
 
-nav.links a:hover {
-  text-decoration: underline;
+nav.links a:hover,
+nav.back a:hover {
+  background-size: 100% 1px;
 }
 
 nav.back {
   margin-bottom: 1.5rem;
 }
 
-nav.back a {
-  text-decoration: none;
-}
-
-nav.back a:hover {
-  text-decoration: underline;
-}
-
 section {
   margin: 2.5rem 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+section:first-of-type {
+  padding-top: 0;
+  border-top: none;
+}
+
+.back-to-top {
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
 h2 {
@@ -184,6 +247,16 @@ p { margin: 0 0 0.9rem; }
 details summary {
   cursor: pointer;
   color: var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c2117;
+    --text: #e8e6d8;
+    --text-muted: #a9a98a;
+    --accent: #7fbf8a;
+    --line: #3a4630;
+  }
 }
 
 @media print {
