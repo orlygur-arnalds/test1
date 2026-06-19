@@ -45,18 +45,6 @@
 
   let nodes = new Array(NODE_COUNT).fill(null).map(spawnNode);
 
-  function bow(a, b) {
-    const mx = (a.x + b.x) / 2;
-    const my = (a.y + b.y) / 2;
-    const dx = b.x - a.x;
-    const dy = b.y - a.y;
-    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-    const curve = Math.sin(a.phase + b.phase) * dist * 0.12;
-    const nx = -dy / dist;
-    const ny = dx / dist;
-    return { cx: mx + nx * curve, cy: my + ny * curve, dist };
-  }
-
   function tick() {
     const now = performance.now();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -69,22 +57,6 @@
     });
 
     nodes = nodes.map((n) => (now - n.born > n.life ? spawnNode() : n));
-
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const a = nodes[i], b = nodes[j];
-        const { cx, cy, dist } = bow(a, b);
-        if (dist > 260) continue;
-        const breathe = (Math.sin(now * 0.0004 + a.phase + b.phase) + 1) / 2;
-        const alpha = (1 - dist / 260) * 0.16 * (0.4 + breathe * 0.6);
-        ctx.strokeStyle = `rgba(${INK}, ${alpha})`;
-        ctx.lineWidth = 0.6;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.quadraticCurveTo(cx, cy, b.x, b.y);
-        ctx.stroke();
-      }
-    }
 
     nodes.forEach((n) => {
       const breathe = (Math.sin(now * n.breathe + n.phase) + 1) / 2;
