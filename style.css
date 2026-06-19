@@ -128,11 +128,7 @@ nav.links {
 nav.links a,
 nav.back a {
   text-decoration: none;
-  transition: color 0.15s ease, letter-spacing 0.15s ease;
-}
-
-nav.links a:hover {
-  letter-spacing: 0.02em;
+  transition: color 0.15s ease;
 }
 
 nav.links a:hover,
