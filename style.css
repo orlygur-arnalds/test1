@@ -87,6 +87,12 @@ nav.back a:focus-visible {
   width: min(36vw, 420px);
   max-width: 100%;
   border: 1px solid var(--line);
+  filter: grayscale(0.85) contrast(1.05);
+  transition: filter 0.4s ease;
+}
+
+.hero__photo:hover {
+  filter: grayscale(0) contrast(1);
 }
 
 @media (max-width: 700px) {
@@ -128,7 +134,11 @@ nav.links {
 nav.links a,
 nav.back a {
   text-decoration: none;
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, letter-spacing 0.15s ease;
+}
+
+nav.links a:hover {
+  letter-spacing: 0.02em;
 }
 
 nav.links a:hover,
@@ -159,9 +169,12 @@ section:first-of-type {
 }
 
 h2 {
-  margin: 0 0 0.8rem;
-  font-size: 1rem;
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
   font-weight: bold;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
 }
 
 p { margin: 0 0 0.9rem; }
