@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://orlygur-arnalds.github.io/test1/sitemap.xml
