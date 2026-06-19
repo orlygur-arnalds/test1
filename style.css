@@ -87,12 +87,6 @@ nav.back a:focus-visible {
   width: min(36vw, 420px);
   max-width: 100%;
   border: 1px solid var(--line);
-  filter: grayscale(0.85) contrast(1.05);
-  transition: filter 0.4s ease;
-}
-
-.hero__photo:hover {
-  filter: grayscale(0) contrast(1);
 }
 
 @media (max-width: 700px) {
